@@ -53,6 +53,13 @@ colnames(cd19_t) <- cd19[, 1]
 cd19_t$bcr_patient_barcode <- rownames(cd19_t); rownames(cd19_t) <- NULL
 cd19_merge = merge(xCell_freq_merge, cd19_t, by="bcr_patient_barcode") # 5370 x 69
 
+# log2 transform CD19 expression values
+if (min(cd19_merge$`CD19|930`) <= 0) {
+  cd19_merge$`CD19|930` = log2(cd19_merge$`CD19|930` + abs(min(cd19_merge$`CD19|930`)) + 0.05)
+} else {
+  cd19_merge$`CD19|930` = log2(cd19_merge$`CD19|930`)
+}
+
 # generate CD19 summary df (cd19_df) 
 cd19_df <- data.frame(matrix(ncol = 3, nrow = 0))
 for (cancer in unique(cd19_merge$DISEASE)) {
@@ -85,6 +92,13 @@ cd27_t <- as.data.frame(t(cd27[-1]))
 colnames(cd27_t) <- cd27[, 1]
 cd27_t$bcr_patient_barcode <- rownames(cd27_t); rownames(cd27_t) <- NULL
 cd27_merge = merge(xCell_freq_merge, cd27_t, by="bcr_patient_barcode") # 5370 x 69
+
+# log2 transform CD27 expression values
+if (min(cd27_merge$`CD27|939`) <= 0) {
+  cd27_merge$`CD27|939` = log2(cd27_merge$`CD27|939` + abs(min(cd27_merge$`CD27|939`)) + 0.05)
+} else {
+  cd27_merge$`CD27|939` = log2(cd27_merge$`CD27|939`)
+}
 
 # generate CD27 summary df (cd27_df) 
 cd27_df <- data.frame(matrix(ncol = 3, nrow = 0))
@@ -120,6 +134,13 @@ colnames(cd40_t) <- cd40[, 1]
 cd40_t$bcr_patient_barcode <- rownames(cd40_t); rownames(cd40_t) <- NULL
 cd40_merge = merge(xCell_freq_merge, cd40_t, by="bcr_patient_barcode") # 5370 x 69
 
+# log2 transform CD40 expression values
+if (min(cd40_merge$`CD40|958`) <= 0) {
+  cd40_merge$`CD40|958` = log2(cd40_merge$`CD40|958` + abs(min(cd40_merge$`CD40|958`)) + 0.05)
+} else {
+  cd40_merge$`CD40|958` = log2(cd40_merge$`CD40|958`)
+}
+
 # generate CD40 summary df (cd40_df) 
 cd40_df <- data.frame(matrix(ncol = 3, nrow = 0))
 for (cancer in unique(cd40_merge$DISEASE)) {
@@ -153,6 +174,13 @@ colnames(cd8A_t) <- cd8A[, 1]
 cd8A_t$bcr_patient_barcode <- rownames(cd8A_t); rownames(cd8A_t) <- NULL
 cd8A_merge = merge(xCell_freq_merge, cd8A_t, by="bcr_patient_barcode") # 5370 x 69
 
+# log2 transform CD8A expression values
+if (min(cd8A_merge$`CD8A|925`) <= 0) {
+  cd8A_merge$`CD8A|925` = log2(cd8A_merge$`CD8A|925` + abs(min(cd8A_merge$`CD8A|925`)) + 0.05)
+} else {
+  cd8A_merge$`CD8A|925` = log2(cd8A_merge$`CD8A|925`)
+}
+
 # generate CD8A summary df (cd8A_df) 
 cd8A_df <- data.frame(matrix(ncol = 3, nrow = 0))
 for (cancer in unique(cd8A_merge$DISEASE)) {
@@ -168,7 +196,6 @@ for (cancer in unique(cd8A_merge$DISEASE)) {
 }
 
 colnames(cd8A_df) <- c("cancer", "sample_size", "avg_CD8A_expr")
-
 
 tt=cd8A_df[order(cd8A_df$cancer, decreasing=FALSE),]
 tn = "out/CD8A_expression_by_cancer.txt"
@@ -186,6 +213,13 @@ cd45RO_t <- as.data.frame(t(cd45RO[-1]))
 colnames(cd45RO_t) <- cd45RO[, 1]
 cd45RO_t$bcr_patient_barcode <- rownames(cd45RO_t); rownames(cd45RO_t) <- NULL
 cd45RO_merge = merge(xCell_freq_merge, cd45RO_t, by="bcr_patient_barcode") # 5370 x 69
+
+# log2 transform CD45RO expression values
+if (min(cd45RO_merge$`PTPRC|5788`) <= 0) {
+  cd45RO_merge$`PTPRC|5788` = log2(cd45RO_merge$`PTPRC|5788` + abs(min(cd45RO_merge$`PTPRC|5788`)) + 0.05)
+} else {
+  cd45RO_merge$`PTPRC|5788` = log2(cd45RO_merge$`PTPRC|5788`)
+}
 
 # generate CD45RO summary df (cd45RO_df) 
 cd45RO_df <- data.frame(matrix(ncol = 3, nrow = 0))
@@ -213,7 +247,7 @@ write.table(tt, quote=F, sep="\t", file = tn, row.names = F)
 
 library(PerformanceAnalytics)
 
-cd27_select = select(cd27_merge, "bcr_patient_barcode", "CD27|939") # B- and T-cell marker
+cd27_select = select(cd27_merge, "bcr_patient_barcode", "CD27|939") # B and T-cell marker
 
 # B-cell markers #
 cd40_select = select(cd40_merge, "bcr_patient_barcode", "CD40|958")
